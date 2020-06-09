@@ -9,7 +9,9 @@ import (
 	"fmt"
 	"iteration/common"
 	"iteration/server/handler"
+	"iteration/utils"
 	"net"
+	"os"
 )
 
 func main() {
@@ -17,25 +19,57 @@ func main() {
 }
 
 var serHandler = func(conn net.Conn, list []interface{}) {
-	first := make([]byte, common.MSG_LEN)
-	_, err := conn.Read(first)
-	if err != nil {
-		fmt.Println("一个客户端退出")
-		_ = conn.Close()
-		return
+	for {
+		first := make([]byte, common.MSG_LEN)
+		_, err := conn.Read(first)
+		if err != nil {
+			fmt.Println("一个客户端退出")
+			_ = conn.Close()
+			return
+		}
+		msg := common.ByteToObj(&first)
+		switch msg.Cmd {
+		case common.CMD_SHELL:
+			shellStrategy(msg, conn)
+		case common.CMD_FILE:
+			fileStrategy(msg, conn)
+		}
 	}
-	msg := common.ByteToObj(&first)
-	switch msg.Cmd {
-	case common.CMD_SHELL:
-		shellStrategy(msg, conn)
-	case common.CMD_FILE:
+}
+
+func fileStrategy(msg *common.DataMsg, conn net.Conn) {
+	fmt.Println("收到一个包,seq=", msg.Seq, ",total=", msg.Total, ",Len=", msg.Len)
+	// 是否第一个包
+	if msg.Seq == 1 {
+		_ = utils.MakeFile("copy" + common.JAR_NAME)
+	}
+	file, err := os.OpenFile("copy"+common.JAR_NAME, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
+	if file == nil || err != nil {
+		panic(err)
+	}
+	_, err = file.Seek(int64((msg.Seq-1)*common.MAX_DATE_LEN), 0)
+	if err != nil {
+		panic(err)
+	}
+	_, err = file.Write(msg.Data[0:msg.Len])
+	if err != nil {
+		panic(err)
+	}
+	// 是否最后一个包
+	if msg.Seq == msg.Total {
+		_, _ = conn.Write([]byte("文件传输完毕"))
+	} else {
+		_, _ = conn.Write([]byte(fmt.Sprintf("已完成第%d个包,共%d个", msg.Seq, msg.Total)))
 	}
 }
 
 func shellStrategy(msg *common.DataMsg, conn net.Conn) {
+	fmt.Println("msg.Len=", msg.Len)
 	shell := string(msg.Data[0:msg.Len])
-	fmt.Println(msg.Cmd)
-	fmt.Println(msg.Len)
-	fmt.Println("执行脚本=", shell)
-	conn.Write([]byte("ok"))
+	result, err := utils.RunCmd(common.CMD_NAME, shell)
+	if err != nil {
+		_, _ = conn.Write([]byte("执行错误：" + err.Error()))
+	} else {
+		_, _ = conn.Write([]byte(result))
+	}
 }

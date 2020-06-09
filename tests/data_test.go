@@ -29,4 +29,10 @@ func TestData(t *testing.T) {
 
 func TestFile(t *testing.T) {
 	fmt.Println(utils.GetFileSize("1.jpg"))
+
+	utils.MakeFile("www/ast/1.txt")
+}
+
+func TestCmd(t *testing.T) {
+	fmt.Println(utils.RunCmd("cmd.exe", "dir"))
 }

@@ -11,6 +11,13 @@ import (
 )
 
 const (
+	// 针对的Jar包
+	JAR_NAME = "1.jpg"
+	// CMD命令，win=cmd.exe，linux=/bin/sh
+	CMD_NAME = "cmd.exe"
+)
+
+const (
 	// 执行Shell脚本
 	CMD_SHELL = iota
 	// 文件传输
@@ -32,7 +39,7 @@ type DataMsg struct {
 	// 包序号
 	Seq int32
 	// 包数量
-	Size int32
+	Total int32
 	// 数据
 	Data [MAX_DATE_LEN]byte
 }
@@ -43,7 +50,7 @@ func ByteToObj(data *[]byte) *DataMsg {
 	_ = binary.Read(buffer, binary.LittleEndian, &msg.Cmd)
 	_ = binary.Read(buffer, binary.LittleEndian, &msg.Len)
 	_ = binary.Read(buffer, binary.LittleEndian, &msg.Seq)
-	_ = binary.Read(buffer, binary.LittleEndian, &msg.Size)
+	_ = binary.Read(buffer, binary.LittleEndian, &msg.Total)
 	_ = binary.Read(buffer, binary.LittleEndian, &msg.Data)
 	return msg
 }
@@ -53,7 +60,7 @@ func ObjToByte(data *DataMsg) []byte {
 	_ = binary.Write(buffer, binary.LittleEndian, data.Cmd)
 	_ = binary.Write(buffer, binary.LittleEndian, data.Len)
 	_ = binary.Write(buffer, binary.LittleEndian, data.Seq)
-	_ = binary.Write(buffer, binary.LittleEndian, data.Size)
+	_ = binary.Write(buffer, binary.LittleEndian, data.Total)
 	_ = binary.Write(buffer, binary.LittleEndian, data.Data)
 	return buffer.Bytes()
 }

@@ -7,14 +7,59 @@ package utils
 
 import (
 	"os"
-	"path/filepath"
+	"strings"
 )
 
+/**
+获取文件大小
+*/
 func GetFileSize(filePath string) int64 {
-	var result int64
-	filepath.Walk(filePath, func(path string, f os.FileInfo, err error) error {
-		result = f.Size()
-		return nil
-	})
-	return result
+	stat, err := os.Stat(filePath)
+	if err != nil {
+		return -1
+	}
+	return stat.Size()
+}
+
+/**
+判断文件是否存在
+*/
+func FileExit(filePath string) bool {
+	_, err := os.Stat(filePath)
+	return err == nil || os.IsExist(err)
+}
+
+/**
+创建文件，如果存在则删除
+*/
+func MakeFile(filePath string) error {
+	// 是否带有目录
+	if arr := DirPathArr(&filePath); len(arr) > 1 {
+		MakeDir(arr[0])
+		//MakeFile(arr[0] + "/" + arr[1])
+	}
+	if FileExit(filePath) {
+		_ = os.RemoveAll(filePath)
+	}
+	file, err := os.Create(filePath)
+	defer file.Close()
+	return err
+}
+
+/**
+创建目录
+*/
+func MakeDir(dirPath string) error {
+	return os.MkdirAll(dirPath, os.ModePerm)
+}
+
+/**
+返回目录+文件
+*/
+func DirPathArr(path *string) []string {
+	index := strings.LastIndex(*path, "/")
+	if index == -1 {
+		return []string{*path}
+	}
+	return []string{(*path)[0:index], (*path)[index+1 : len(*path)]}
 }
