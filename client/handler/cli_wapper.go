@@ -5,10 +5,14 @@
  */
 package handler
 
-import "net"
+import (
+	"fmt"
+	"iteration/common"
+	"net"
+)
 
 func ClientStart(send func(net.Conn), receive func(net.Conn)) {
-	conn, err := net.Dial("tcp", "127.0.0.1:8848")
+	conn, err := net.Dial("tcp", fmt.Sprintf("%s:%d", common.SERVER_ADDR, common.SERVER_PORT))
 	if err != nil {
 		println("客户端建立连接失败")
 		panic(err)

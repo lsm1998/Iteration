@@ -18,7 +18,7 @@ var send = func(conn net.Conn) {
 			panic(err)
 		}
 		cmd := string(line)
-		cmd = cmd[0 : len(cmd)-1]
+		cmd = strings.ReplaceAll(cmd, "\r\n", "")
 		switch cmd {
 		case "exit":
 			_ = conn.Close()
@@ -59,8 +59,14 @@ func Listeners() {
 					break read
 				}
 			}
-			fmt.Println("收到消息->" + buffer.String())
-			BlockNotify()
+			result := buffer.String()
+			if strings.Index(result, "notify") >= 0 {
+				result = result[6:]
+				fmt.Println("收到消息->" + result)
+				BlockNotify()
+			} else {
+				fmt.Println("收到消息->" + result)
+			}
 		}
 	}
 	ClientStart(send, receive)

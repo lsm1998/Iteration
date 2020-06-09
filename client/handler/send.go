@@ -16,8 +16,6 @@ func sendShell(cmd string, conn net.Conn) {
 	_, err := conn.Write(common.ObjToByte(msg))
 	if err != nil {
 		_ = fmt.Errorf("发送失败")
-	} else {
-		BlockWait()
 	}
 }
 
@@ -46,19 +44,15 @@ func sendFile(cmd string, conn net.Conn) {
 			panic(err)
 		}
 		msg.Len = int32(n)
-		for i := 0; i < 10; i++ {
-			fmt.Println(data[i])
-		}
 		msg.Data = data
 		_, err = conn.Write(common.ObjToByte(msg))
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("-----发送一次----")
+		fmt.Println("发送一个包,seq=", msg.Seq)
 		if count == total {
 			break
 		}
 		count++
 	}
-	fmt.Println("ok")
 }

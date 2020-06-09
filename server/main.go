@@ -28,6 +28,7 @@ var serHandler = func(conn net.Conn, list []interface{}) {
 			return
 		}
 		msg := common.ByteToObj(&first)
+		fmt.Println("解析到一个msg,cmd=", msg.Cmd, ",seq=", msg.Seq)
 		switch msg.Cmd {
 		case common.CMD_SHELL:
 			shellStrategy(msg, conn)
@@ -57,14 +58,13 @@ func fileStrategy(msg *common.DataMsg, conn net.Conn) {
 	}
 	// 是否最后一个包
 	if msg.Seq == msg.Total {
-		_, _ = conn.Write([]byte("文件传输完毕"))
+		_, _ = conn.Write([]byte("notify最后一个包，文件传输完毕"))
 	} else {
 		_, _ = conn.Write([]byte(fmt.Sprintf("已完成第%d个包,共%d个", msg.Seq, msg.Total)))
 	}
 }
 
 func shellStrategy(msg *common.DataMsg, conn net.Conn) {
-	fmt.Println("msg.Len=", msg.Len)
 	shell := string(msg.Data[0:msg.Len])
 	result, err := utils.RunCmd(common.CMD_NAME, shell)
 	if err != nil {
