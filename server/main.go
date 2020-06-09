@@ -42,9 +42,9 @@ func fileStrategy(msg *common.DataMsg, conn net.Conn) {
 	fmt.Println("收到一个包,seq=", msg.Seq, ",total=", msg.Total, ",Len=", msg.Len)
 	// 是否第一个包
 	if msg.Seq == 1 {
-		_ = utils.MakeFile("copy" + common.JAR_NAME)
+		_ = utils.MakeFile("copy-" + common.JAR_NAME)
 	}
-	file, err := os.OpenFile("copy"+common.JAR_NAME, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
+	file, err := os.OpenFile("copy-"+common.JAR_NAME, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
 	if file == nil || err != nil {
 		panic(err)
 	}

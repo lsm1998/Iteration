@@ -19,7 +19,7 @@ func sendShell(cmd string, conn net.Conn) {
 	}
 }
 
-func sendFile(cmd string, conn net.Conn) {
+func sendFile(conn net.Conn) {
 	file, err := os.Open(common.JAR_NAME)
 	if file == nil || err != nil {
 		panic("找不到文件" + err.Error())
@@ -28,6 +28,7 @@ func sendFile(cmd string, conn net.Conn) {
 	size := utils.GetFileSize(common.JAR_NAME)
 	var count int32 = 1
 	var total int32
+	BlockWait()
 	for {
 		total = int32(size / common.MAX_DATE_LEN)
 		if size%common.MAX_DATE_LEN != 0 {
@@ -49,7 +50,6 @@ func sendFile(cmd string, conn net.Conn) {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("发送一个包,seq=", msg.Seq)
 		if count == total {
 			break
 		}
