@@ -1,0 +1,10 @@
+# Default ignored files
+/.idea
+
+/cmake-build-debug
+
+*.iml
+
+*.xml
+
+
