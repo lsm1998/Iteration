@@ -21,13 +21,13 @@ const (
 
 const (
 	// 数据数组长度
-	MAX_DATE_LEN = 1024 * 1024
+	MAX_DATE_LEN = 1024 * 10
 	// 每个数据包大小
 	MSG_LEN = MAX_DATE_LEN + 4*4
 	// 针对的Jar包
-	JAR_NAME = "hello.exe"
+	JAR_NAME = "1.txt"
 	// 服务器IP地址
-	SERVER_ADDR = "118.24.239.74"
+	SERVER_ADDR = "127.0.0.1"
 	// 服务器端口
 	SERVER_PORT = 8848
 )
