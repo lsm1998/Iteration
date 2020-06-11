@@ -57,9 +57,25 @@ func MakeDir(dirPath string) error {
 返回目录+文件
 */
 func DirPathArr(path *string) []string {
-	index := strings.LastIndex(*path, "/")
-	if index == -1 {
+	index1 := strings.LastIndex(*path, "\\")
+	index2 := strings.LastIndex(*path, "/")
+	if index1 == -1 && index2 == -1 {
 		return []string{*path}
 	}
+	index := index1
+	if index2 > index1 {
+		index = index2
+	}
 	return []string{(*path)[0:index], (*path)[index+1 : len(*path)]}
+}
+
+/**
+获取文件名称
+*/
+func GetFileName(filePath *string) string {
+	arr := DirPathArr(filePath)
+	if len(arr) == 1 {
+		return arr[0]
+	}
+	return arr[1]
 }

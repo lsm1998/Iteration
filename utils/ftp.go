@@ -28,7 +28,8 @@ func Transfer(C *config.Config) {
 		panic(err)
 	}
 	defer srcFile.Close()
-	var remoteFileName = path.Base(fmt.Sprintf("%s\\%s", C.Path, C.JarName))
+	filePath := fmt.Sprintf("%s\\%s", C.Path, C.JarName)
+	var remoteFileName = path.Base(GetFileName(&filePath))
 	dstFile, err := sftpClient.Create(path.Join(C.RemoteDir, remoteFileName))
 	if err != nil {
 		panic(err)

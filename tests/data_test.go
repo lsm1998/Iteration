@@ -30,9 +30,10 @@ func TestData(t *testing.T) {
 }
 
 func TestFile(t *testing.T) {
-	fmt.Println(utils.GetFileSize("1.jpg"))
-
-	utils.MakeFile("www/ast/1.txt")
+	path := "C:/Users\\Administrator/GolandProjects/Iteration/tests/data_test.go"
+	fmt.Println(utils.GetFileName(&path))
+	fmt.Println(utils.GetFileName(&path))
+	// utils.MakeFile("www/ast/1.txt")
 }
 
 func TestCmd(t *testing.T) {

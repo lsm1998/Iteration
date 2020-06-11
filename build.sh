@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# 项目名称和镜像版本
 IMAGE_REPOSITORY="ipims"
 IMAGE_VERSION="v6"
 
@@ -18,7 +19,7 @@ function stop() {
   docker rm -f ${IMAGE_REPOSITORY} || true
 }
 
-# 启动
+# 启动，端口写死8088
 function start() {
   docker run -d --name ${IMAGE_REPOSITORY} -p 8088:8088 -v /etc/localtime:/etc/localtime $IMAGE_REPOSITORY:${IMAGE_VERSION}
 }

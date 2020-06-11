@@ -7,6 +7,7 @@ package handler
 
 import (
 	"fmt"
+	"iteration/client/config"
 	"net"
 )
 
@@ -14,7 +15,7 @@ var dataList = make([]interface{}, 0, 10)
 
 // 服务端启动
 func ServerStart(handler func(net.Conn, []interface{})) {
-	server, err := net.Listen("tcp", fmt.Sprintf(":%d", 8848))
+	server, err := net.Listen("tcp", fmt.Sprintf(":%d", config.C.Port))
 	if err != nil {
 		fmt.Println("TCP服务端启动失败")
 		panic(err)

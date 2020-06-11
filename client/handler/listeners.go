@@ -20,7 +20,7 @@ var send = func(conn net.Conn) {
 		cmd := string(line)
 		cmd = strings.ReplaceAll(cmd, "\r\n", "")
 		switch cmd {
-		case "package":
+		case "pag":
 			transferFile()
 			sendShell("shell sh build.sh", conn)
 		case "exit":
