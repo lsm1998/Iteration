@@ -7,9 +7,11 @@ package tests
 
 import (
 	"fmt"
+	"iteration/client/config"
 	"iteration/common"
 	"iteration/utils"
 	"testing"
+	"time"
 )
 
 func TestData(t *testing.T) {
@@ -35,4 +37,11 @@ func TestFile(t *testing.T) {
 
 func TestCmd(t *testing.T) {
 	fmt.Println(utils.RunCmd("cmd.exe", "dir"))
+}
+
+func TestTransfer(t *testing.T) {
+	start := time.Now().Unix()
+	utils.Transfer(&config.C)
+	end := time.Now().Unix()
+	fmt.Println(end - start)
 }

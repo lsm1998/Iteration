@@ -26,20 +26,38 @@ type DataMsg struct {
 func ByteToObj(data *[]byte) *DataMsg {
 	msg := &DataMsg{}
 	buffer := bytes.NewReader(*data)
-	_ = binary.Read(buffer, binary.LittleEndian, &msg.Cmd)
-	_ = binary.Read(buffer, binary.LittleEndian, &msg.Len)
-	_ = binary.Read(buffer, binary.LittleEndian, &msg.Seq)
-	_ = binary.Read(buffer, binary.LittleEndian, &msg.Total)
-	_ = binary.Read(buffer, binary.LittleEndian, &msg.Data)
+	//if OS_NAME == "windows" {
+	//	_ = binary.Read(buffer, binary.LittleEndian, &msg.Data)
+	//	_ = binary.Read(buffer, binary.LittleEndian, &msg.Total)
+	//	_ = binary.Read(buffer, binary.LittleEndian, &msg.Seq)
+	//	_ = binary.Read(buffer, binary.LittleEndian, &msg.Len)
+	//	_ = binary.Read(buffer, binary.LittleEndian, &msg.Cmd)
+	//} else
+	{
+		_ = binary.Read(buffer, binary.LittleEndian, &msg.Cmd)
+		_ = binary.Read(buffer, binary.LittleEndian, &msg.Len)
+		_ = binary.Read(buffer, binary.LittleEndian, &msg.Seq)
+		_ = binary.Read(buffer, binary.LittleEndian, &msg.Total)
+		_ = binary.Read(buffer, binary.LittleEndian, &msg.Data)
+	}
 	return msg
 }
 
 func ObjToByte(data *DataMsg) []byte {
 	buffer := bytes.NewBuffer([]byte{})
-	_ = binary.Write(buffer, binary.LittleEndian, data.Cmd)
-	_ = binary.Write(buffer, binary.LittleEndian, data.Len)
-	_ = binary.Write(buffer, binary.LittleEndian, data.Seq)
-	_ = binary.Write(buffer, binary.LittleEndian, data.Total)
-	_ = binary.Write(buffer, binary.LittleEndian, data.Data)
+	//if OS_NAME == "windows" {
+	//	_ = binary.Write(buffer, binary.LittleEndian, data.Data)
+	//	_ = binary.Write(buffer, binary.LittleEndian, data.Total)
+	//	_ = binary.Write(buffer, binary.LittleEndian, data.Seq)
+	//	_ = binary.Write(buffer, binary.LittleEndian, data.Len)
+	//	_ = binary.Write(buffer, binary.LittleEndian, data.Cmd)
+	//} else
+	{
+		_ = binary.Write(buffer, binary.LittleEndian, data.Cmd)
+		_ = binary.Write(buffer, binary.LittleEndian, data.Len)
+		_ = binary.Write(buffer, binary.LittleEndian, data.Seq)
+		_ = binary.Write(buffer, binary.LittleEndian, data.Total)
+		_ = binary.Write(buffer, binary.LittleEndian, data.Data)
+	}
 	return buffer.Bytes()
 }

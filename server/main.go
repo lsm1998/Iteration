@@ -7,6 +7,7 @@ package main
 
 import (
 	"fmt"
+	"iteration/client/config"
 	"iteration/common"
 	"iteration/server/handler"
 	"iteration/utils"
@@ -42,9 +43,9 @@ func fileStrategy(msg *common.DataMsg, conn net.Conn) {
 	fmt.Println("收到一个包,seq=", msg.Seq, ",total=", msg.Total, ",Len=", msg.Len)
 	// 是否第一个包
 	if msg.Seq == 1 {
-		_ = utils.MakeFile("copy-" + common.JAR_NAME)
+		_ = utils.MakeFile(config.C.JarName)
 	}
-	file, err := os.OpenFile("copy-"+common.JAR_NAME, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
+	file, err := os.OpenFile(config.C.JarName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
 	if file == nil || err != nil {
 		panic(err)
 	}
@@ -66,6 +67,7 @@ func fileStrategy(msg *common.DataMsg, conn net.Conn) {
 
 func shellStrategy(msg *common.DataMsg, conn net.Conn) {
 	shell := string(msg.Data[0:msg.Len])
+	fmt.Printf("收到shell命令=[%s],[%s] \n", common.CMD_NAME, shell)
 	result, err := utils.RunCmd(common.CMD_NAME, shell)
 	if err != nil {
 		_, _ = conn.Write([]byte("执行错误：" + err.Error()))

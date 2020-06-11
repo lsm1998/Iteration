@@ -5,11 +5,15 @@
  */
 package common
 
-import "runtime"
+import (
+	"runtime"
+)
 
 var (
 	// CMD命令，win=cmd.exe，linux=/bin/sh
 	CMD_NAME = "cmd.exe"
+	// 操作系统类型
+	OS_NAME = "windows"
 )
 
 const (
@@ -24,16 +28,11 @@ const (
 	MAX_DATE_LEN = 1024 * 10
 	// 每个数据包大小
 	MSG_LEN = MAX_DATE_LEN + 4*4
-	// 针对的Jar包
-	JAR_NAME = "1.txt"
-	// 服务器IP地址
-	SERVER_ADDR = "127.0.0.1"
-	// 服务器端口
-	SERVER_PORT = 8848
 )
 
 func init() {
 	if runtime.GOOS == "linux" {
 		CMD_NAME = "/bin/sh"
+		OS_NAME = "linux"
 	}
 }

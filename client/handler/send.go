@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"iteration/client/config"
 	"iteration/common"
 	"iteration/utils"
 	"net"
@@ -9,6 +10,8 @@ import (
 )
 
 func sendShell(cmd string, conn net.Conn) {
+	start := len("shell ")
+	cmd = cmd[start:]
 	temp := []byte(cmd)
 	arr := [common.MAX_DATE_LEN]byte{}
 	copy(arr[0:len(temp)], temp)
@@ -55,4 +58,9 @@ func sendFile(conn net.Conn) {
 		}
 		count++
 	}
+}
+
+// 发送包至服务器
+func transferFile() {
+	utils.Transfer(&config.C)
 }

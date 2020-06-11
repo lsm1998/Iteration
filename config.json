@@ -1,0 +1,9 @@
+{
+  "user": "root",
+  "password": "Swiftelink0103",
+  "jarName": "ipims-web-1.0.1-SNAPSHOT.jar",
+  "path": "E:\\test\\ipims\\ipims-web\\target",
+  "remoteDir": "/app/ipims",
+  "ip": "47.113.117.251",
+  "port": 8848
+}
