@@ -9,7 +9,7 @@
 2. https://segmentfault.com/a/1190000013493942
 
 使用方式：
-1. 服务端使用build.bat编译，发在jar包和dockerfile同级目录，服务端json配置只需要port即可；
+1. 服务端使用build.bat编译，放在jar包和dockerfile同级目录，服务端json配置只需要port即可；
 2. 客户端需要指定json配置各项，输入pag命令即是发包指令；
 3. 支持运行命令，不用连接服务器即可使用基本命令；
 
