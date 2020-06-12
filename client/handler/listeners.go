@@ -83,17 +83,11 @@ func Listeners() {
 					break the
 				}
 				buffer.Write(temp[0:cnt])
-				if cnt < 1024 {
+				if cnt < 1024*10 {
 					break read
 				}
 			}
-			result := buffer.String()
-			if len(resultChannel) > 0 {
-				// 这种情况是回复命令过长，直接打印
-				fmt.Println(result)
-			} else {
-				resultChannel <- result
-			}
+			resultChannel <- buffer.String()
 		}
 	}
 	ClientStart(send, receive)
