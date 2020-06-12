@@ -74,8 +74,8 @@ func Listeners() {
 			var buffer bytes.Buffer
 		read:
 			for {
-				// 每次读取1K
-				temp := make([]byte, 1024)
+				// 每次读取10K
+				temp := make([]byte, 1024*10)
 				cnt, err := conn.Read(temp)
 				if err != nil {
 					println("服务器异常")
@@ -88,8 +88,9 @@ func Listeners() {
 				}
 			}
 			result := buffer.String()
-			if strings.Index(result, "notify") >= 0 {
-				resultChannel <- result[6:]
+			if len(resultChannel) > 0 {
+				// 这种情况是回复命令过长，直接打印
+				fmt.Println(result)
 			} else {
 				resultChannel <- result
 			}
