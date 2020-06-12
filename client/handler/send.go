@@ -23,12 +23,12 @@ func sendShell(cmd string, conn net.Conn) {
 }
 
 func sendFile(conn net.Conn) {
-	file, err := os.Open(common.JAR_NAME)
+	file, err := os.Open(config.C.JarName)
 	if file == nil || err != nil {
 		panic("找不到文件" + err.Error())
 	}
 	defer file.Close()
-	size := utils.GetFileSize(common.JAR_NAME)
+	size := utils.GetFileSize(config.C.JarName)
 	var count int32 = 1
 	var total int32
 	BlockWait()
